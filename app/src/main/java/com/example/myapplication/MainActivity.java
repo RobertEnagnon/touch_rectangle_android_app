@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.PointF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
@@ -23,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     //To verify if the rectangle is already draw
     private boolean isRectangleDrawn = false;
 
+    private int pointerCount = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,11 +40,16 @@ public class MainActivity extends AppCompatActivity {
     public boolean onTouchEvent(MotionEvent event) {
         int action = event.getActionMasked();
         if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN) {
-            int pointerCount = event.getPointerCount();
-            if (pointerCount == 2) {
-                isRectangleDrawn = false;
+           // int pointerCount = event.getPointerCount();
+            pointerCount++;
+
+            if (pointerCount == 1){
                 touchPoint1 = new PointF(event.getX(0), event.getY(0));
-                touchPoint2 = new PointF(event.getX(1), event.getY(1));
+            }
+            if (pointerCount == 2) {
+                pointerCount = 0;
+                isRectangleDrawn = false;
+                touchPoint2 = new PointF(event.getX(0), event.getY(0));
                 drawRectangle();
                 return true;
             }
